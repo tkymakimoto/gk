@@ -1,0 +1,53 @@
+/**
+ @page VectorConceptPage 
+ @section IntroductionSection Introduction
+ This library uses a template programming. 
+
+ @subsection MemberMethodsSection Member methods
+
+ Methods | Descriptions | Examples 
+ ---------|---------------- | ---------
+ @code{.cpp} Vector() @endcode | Zero position vector. | @code{.cpp} Vector v; @endcode
+ @code{.cpp} Vector(const Vector&) @endcode | Copy constructor. | @code{.cpp} Vector other(v); @endcode
+ @code{.cpp} const value_type& operator[](size_t n) @endcode | | @code{.cpp} a = v[n]; @endcode
+ @code{.cpp} value_type& operator[](size_t n) @endcode | | @code{.cpp} v[n] = a; @endcode
+ @code{.cpp} Vector& operator=(const Vector&) @endcode | Copy operator. | @code{.cpp} u = v; @endcode
+ @code{.cpp} Vector& operator+=(const Vector&) @endcode | | @code{.cpp} u += v; @endcode
+ @code{.cpp} Vector& operator-=(const Vector&) @endcode | | @code{.cpp} u -= v; @endcode
+ @code{.cpp} Vector& operator*=(const value_type&) @endcode | | @code{.cpp} v *= alpha; @endcode
+ @code{.cpp} Vector& operator/=(const value_type&) @endcode | | @code{.cpp} v /= alpha; @endcode
+
+ @subsection GeneralFunctionsSection General functions
+
+ Functions | Descriptions | Examples
+ ------------|----------------|----------
+ @code{.cpp} Vector operator+(const Vector&, const Vector&) @endcode | Computes a addition. | @code{.cpp} w = u + v; @endcode
+ @code{.cpp} Vector operator-(const Vector&, const Vector&) @endcode | Computes a subtraction. | @code{.cpp} w = u - v; @endcode
+ @code{.cpp} Vector operator*(const value_type&, const Vector&) @endcode |  | @code{.cpp} w = alpha * v; @endcode
+ @code{.cpp} Vector operator*(const Vector&, const value_type&) @endcode |  | @code{.cpp} w = v * alpha; @endcode
+ @code{.cpp} Vector operator/(const Vector&, const value_type&) @endcode |  | @code{.cpp} w = v / alpha; @endcode
+
+ @subsection OptionalGeneralFunctionSection Optional general functions
+ 
+ Functions | Descriptions | Examples 
+ ------------|----------------|----------
+ @code{.cpp} typename multiplies_result<value_type1,value_type2>::value_type dot(const Vector1& u, const Vector2& v); @endcode | | @code{.cpp} a = dot(u, v) @endcode
+
+ @section TraitsClassSection Traits Class
+ gk::vector_traits 
+
+
+ @code{.cpp}
+ namespace gk {
+ template<typename Vector>
+ struct vector_traits{
+ 	static const size_t Dimension = Vector::Dimension;
+ 	typedef typename Vector::value_type value_type;
+ };
+ } // namespace gk
+ @endcode
+
+ @section ConstructorSection Constructor
+
+ @section AlgebraCalculationSection Algebra calculation
+ */

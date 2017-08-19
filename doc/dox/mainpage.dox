@@ -1,0 +1,15 @@
+/**
+ @mainpage
+ @section IntroductionSection Introduction
+ @b gk is the basic library to calculate geometries.
+
+ @section TemplateProgrammingSection Template Programming
+ This library applies a template programming.
+
+ @section LicenseSection License
+ This library is an open source library. The license of this library is the MIT License.
+
+
+ @page VectorConceptPage Vector Concept
+
+ */
