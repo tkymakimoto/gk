@@ -119,7 +119,7 @@ struct GK {
 	typedef enum {
 		StartEdge, 	///< Start edge
 		EndEdge, 	///< End edge
-		EdgeSize 	///<
+		EdgeSize 	///< Number of edges.
 	} Edge;
 
 	static const std::size_t X = 0;
