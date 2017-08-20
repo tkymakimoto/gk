@@ -119,7 +119,7 @@ struct GK {
 	typedef enum {
 		StartEdge, 	///< Start edge
 		EndEdge, 	///< End edge
-		EdgeSize 	///<
+		EdgeSize 	///< Number of edges.
 	} Edge;
 
 	static const std::size_t X = 0;
@@ -140,13 +140,6 @@ struct GK {
 	static const bool FiniteLength = true;
 };
 
-class GK_Propeties {
-
-};
-
-class GK_Set {
-
-};
 
 template<std::size_t _Dimension1, std::size_t _Dimension2>
 struct check_same_dimension;
