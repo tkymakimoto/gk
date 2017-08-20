@@ -44,13 +44,13 @@ typedef std::size_t size_t;
 #	elif GK_SIZEOF_FLOAT == __SIZEOF_DOUBLE__
 #		define GK_FLOAT_TYPE double
 #	else
-#		error "GK_FLOAT_TYPE" must set 4 or 8.
+#		error "GK_FLOAT_TYPE" must set __SIZEOF_FLOAT__ or __SIZEOF_DOUBLE__.
 #	endif
 #else
 #	define GK_SIZEOF_FLOAT 8
 #		define GK_FLOAT_TYPE double
 #endif
-typedef GK_FLOAT_TYPE float_type;
+typedef GK_FLOAT_TYPE float_type; ///< The type of the floating point value in this library.
 #undef GK_FLOAT_TYPE
 
 template<std::size_t _N>
@@ -102,19 +102,24 @@ struct GK {
 		GK_1D = 1, ///< 1 dimension.
 		GK_2D = 2, ///< 2 dimension.
 		GK_3D = 3 ///< 3 dimension.
-	} DimensionNumber;
+	} Dimension;
 
 	static const std::size_t Dimension2 = 2;
 	static const std::size_t Dimension3 = 3;
 
+	/**
+	 * @brief Enum about precisions of float types.
+	 */
 	typedef enum {
-		GK_SinglePrecision = __SIZEOF_FLOAT__,
-		GK_DoublePrecision = __SIZEOF_DOUBLE__,
-		GK_LongDoublePrecision = __SIZEOF_LONG_DOUBLE__,
+		GK_SinglePrecision = __SIZEOF_FLOAT__,          ///< Single precision
+		GK_DoublePrecision = __SIZEOF_DOUBLE__,         ///< Double precision
+		GK_LongDoublePrecision = __SIZEOF_LONG_DOUBLE__, ///< Long double precision
 	} Precision;
 
 	typedef enum {
-		StartEdge, EndEdge, EdgeSize
+		StartEdge, 	///< Start edge
+		EndEdge, 	///< End edge
+		EdgeSize 	///<
 	} Edge;
 
 	static const std::size_t X = 0;
@@ -128,11 +133,6 @@ struct GK {
 	static const std::size_t MinTag = 0;
 	static const std::size_t MaxTag = 1;
 
-//	static const gkfloat Nan;
-//	static const gkfloat Zero;
-//	static const gkfloat Unit;
-//	static const gkfloat Infinity;
-
 	static const bool Upper = false;
 	static const bool Lower = true;
 
@@ -140,13 +140,6 @@ struct GK {
 	static const bool FiniteLength = true;
 };
 
-class GK_Propeties {
-
-};
-
-class GK_Set {
-
-};
 
 template<std::size_t _Dimension1, std::size_t _Dimension2>
 struct check_same_dimension;
