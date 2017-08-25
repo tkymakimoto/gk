@@ -1,6 +1,6 @@
 # gk - geometry kernel
 
-This library is computing some geometries for C++.
+gk is a C++ library to compute some geometries.
 
 # Installation
 
@@ -8,6 +8,9 @@ It is very easy that you install gk in your programs. gk is written in the heade
 
 When you actually use gk, you only include the header file **gk.h** following the code.
 
-```cpp:Installation of gk
+```cpp
 include <gk.h>
+
+void sample_function() {
+}
 ```
