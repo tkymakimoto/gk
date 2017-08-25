@@ -116,10 +116,13 @@ struct GK {
 		GK_LongDoublePrecision = __SIZEOF_LONG_DOUBLE__, ///< Long double precision
 	} Precision;
 
+	/**
+	 * @brief Enum about of the indices of curve edges.
+	 */
 	typedef enum {
 		StartEdge, 	///< Start edge
 		EndEdge, 	///< End edge
-//		EdgeSize 	///< Number of edges.
+		EdgeSize 	///< Number of edges.
 	} Edge;
 
 	static const std::size_t X = 0;
@@ -139,7 +142,6 @@ struct GK {
 	static const bool InfiniteLength = false;
 	static const bool FiniteLength = true;
 };
-
 
 template<std::size_t _Dimension1, std::size_t _Dimension2>
 struct check_same_dimension;
