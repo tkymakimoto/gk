@@ -22,9 +22,9 @@ template<typename _T, std::size_t _Dimension>
 class point: public geometry<point_tag, _T, _Dimension, _T> {
 public:
 
-	GK_VECTOR_TYPEDEF(_T, _Dimension)
+	GK_VECTOR_TYPEDEF(_T, _Dimension);
 
-public	:
+public :
 	point() : x_() {
 	}
 
