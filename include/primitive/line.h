@@ -158,8 +158,6 @@ private:
 template<typename _T, std::size_t _Dimension>
 class segment: geometry<segment_tag, _T, _Dimension> {
 public:
-	typedef _T value_type;
-	typedef typename vector_type<_T, _Dimension>::type vector_type;
 
 public:
 	segment() :
@@ -275,12 +273,14 @@ aabb<typename segment<_T, _Dimension>::vector_type> boundary(
  * @date 2017/08/15
  */
 template<typename _T, std::size_t _Dimension>
-class polyline/*: public curve<curve_tag, Vector>*/{
+class polyline: public geometry<free_curve_tag, _T, _Dimension, float_type> {
 public:
 
-	GK_VECTOR_TYPEDEF(_T, _Dimension)
+	typedef geometry<free_curve_tag, _T, _Dimension, float_type> base;
 
-typedef	std::vector<vector_type> container_type;
+	GK_GEOMETRY_TYPEDEF(base);
+
+	typedef std::vector<vector_type> container_type;
 //	typedef Parameter parameter;
 
 	typedef typename container_type::iterator iterator;

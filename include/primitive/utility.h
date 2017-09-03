@@ -8,6 +8,10 @@
 #ifndef PRIMITIVE_UTILITY_H_
 #define PRIMITIVE_UTILITY_H_
 
+#include <cstdlib>
+
+#include "../gkvector.h"
+
 namespace gk {
 
 namespace inner {
@@ -22,8 +26,8 @@ namespace inner {
  * @date 2017/06/29
  * @version
  */
-template<typename Vector, typename Tolerance>
-bool is_parallel(const direction<Vector>& u, const direction<Vector>& v,
+template<std::size_t _Dimension, typename Tolerance>
+bool is_parallel(const direction<_Dimension>& u, const direction<_Dimension>& v,
 		const Tolerance& epsilon, dimension_tag<GK::GK_2D>) {
 	return (std::abs(u[GK::X] - v[GK::X]) < epsilon)
 			& (std::abs(u[GK::Y] - v[GK::Y]) < epsilon);
