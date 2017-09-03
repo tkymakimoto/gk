@@ -9,18 +9,15 @@ It is very easy that you install gk in your programs. gk is written in the heade
 When you actually use gk, you only include the header file **gk.h** following the code.
 
 ```cpp
-#include <cstdlib>
-#include <iostream>
-
 #include <gk.h>
 
+#include <cstdlib>
+
 int main(int argc, char** argv) {
+	gk::vector<double, gk::GK::GK_3D> p(0.0, 0.0, 0.0);
+	gk::vector<double, gk::GK::GK_3D> q(1, 0, 1.0, 2.0);
 
-	gk::vector<double, gk::GK::GK_3D> u(2.0, 3.0, -5.0);
-	gk::vector<double, gk::GK::GK_3D> v(-1.5, -4.5, 2.5);
-	gk::vector<double, gk::GK::GK_3D> w = u + v;
-
-	std::cout << w << std::endl;
+	gk::line<double, gk::GK::GK_3D> l(p, q);
 
 	exit(EXIT_SUCCESS);
 }
