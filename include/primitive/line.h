@@ -36,11 +36,11 @@ namespace gk {
 template<typename _T, std::size_t _Dimension = GK::GK_3D>
 class line: public geometry<line_tag, _T, _Dimension> {
 public:
-	typedef geometry<line_tag, _T, _Dimension> base_type;
+	typedef geometry<line_tag, _T, _Dimension> base;
 
-	GK_VECTOR_TYPEDEF(_T, _Dimension)
+	GK_GEOMETRY_TYPEDEF(base);
 
-private	:
+private :
 	template<typename Vector>
 	static vector_type Reference_(const Vector& v, dimension_tag<GK::GK_2D>) {
 		return vector_type(v[GK::X], v[GK::Y]);

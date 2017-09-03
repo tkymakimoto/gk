@@ -11,6 +11,8 @@
 #include "gkdef.h"
 #include "gkversion.h"
 
+#include "gkprimitive.h"
+
 /**
  * @brief Top namespace of gk.
  */

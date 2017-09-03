@@ -9,11 +9,14 @@
 #define PRIMITIVE_TRIANGLE_H_
 
 #include "../gkvector.h"
+#include "../gkgeometry.h"
 
 namespace gk {
 
 struct triangle_tag: public plane_tag {
 };
+
+GK_GEOMETRY_BASE_TEMPLATE_CLASS(triangle_tag)
 
 /**
  * @brief This class represents a triangle.
@@ -25,31 +28,32 @@ struct triangle_tag: public plane_tag {
  *
  * @version 0.X
  */
-template<typename T, std::size_t DimensionSize>
-struct triangle/*: public geometry<triangle_tag, Vector>*/{
+template<typename _T, std::size_t _Dimension>
+struct triangle: public geometry<triangle_tag, _T, _Dimension,
+		vector<_T, GK::GK_2D> > {
 public:
 
-	GK_VECTOR_TYPEDEF(T, DimensionSize)
+	typedef geometry<triangle_tag, _T, _Dimension, vector<_T, GK::GK_2D> > base;
+
+	GK_GEOMETRY_TYPEDEF(base);
 
 	enum {
-		First, Second, Third, ElementSize
+		First, Second, Third, EdgePointSize,
 	};
 
 public:
 	/**
 	 * @brief Default constructor.
 	 */
-	triangle() :
-			x_() {
+	triangle() : x_() {
 	}
 
 	/**
 	 * @brief Copy constructor.
 	 * @param other
 	 */
-	triangle(const triangle& other) :
-			x_() {
-		std::copy(other.x_, other.x_ + ElementSize, this->x_);
+	triangle(const triangle& other) : x_() {
+		std::copy(other.x_, other.x_ + EdgePointSize, this->x_);
 	}
 
 	/**
@@ -107,12 +111,12 @@ public:
 			return *this;
 		}
 
-		std::copy(rhs.x_, rhs.x_ + ElementSize, this->x_);
+		std::copy(rhs.x_, rhs.x_ + EdgePointSize, this->x_);
 		return *this;
 	}
 
 private:
-	vector_type x_[ElementSize];
+	vector_type x_[EdgePointSize];
 
 private:
 	vector_type u_() const {
@@ -132,9 +136,9 @@ private:
  *
  * @see inner::direction_of_triangle()
  */
-template<typename T, std::size_t Dimension>
-direction<Dimension> direction_of(const triangle<T, Dimension>& a) {
-	return cross<direction < Dimension>()(normalize(a.u()), normalize(a.v()));
+template<typename _T, std::size_t _Dimension>
+direction<_Dimension> direction_of(const triangle<_T, _Dimension>& a) {
+	return cross<direction < _Dimension>()(normalize(a.u()), normalize(a.v()));
 }
 
 namespace inner {
@@ -172,14 +176,14 @@ AreaValue area_of_triangle(const Vector& first, const Vector& second,
 
 }  // namespace inner
 
-template<typename T, typename AreaValue>
+template<typename _T, typename AreaValue>
 struct area {
-	AreaValue operator()(const T&) const;
+	AreaValue operator()(const _T&) const;
 };
 
-template<typename T, std::size_t Dimension, typename AreaValue>
-struct area<triangle<T, Dimension>, AreaValue> {
-	AreaValue operator()(const triangle<T, Dimension>& a) const {
+template<typename _T, std::size_t _Dimension, typename AreaValue>
+struct area<triangle<_T, _Dimension>, AreaValue> {
+	AreaValue operator()(const triangle<_T, _Dimension>& a) const {
 //		const dot<Vector, Vector, AreaValue> dot;
 		const AreaValue dot_u = dot(a.u(), a.u());
 		const AreaValue dot_v = dot(a.v(), a.v());

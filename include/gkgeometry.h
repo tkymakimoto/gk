@@ -101,7 +101,8 @@ struct geometry;
 		typedef CATEGORY category; \
 		typedef _T value_type; \
 		typedef _Parameter parameter; \
-	};
+		typedef vector<_T, _Dimension> vector_type; \
+};
 
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(direction_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(line_tag)
@@ -122,7 +123,15 @@ struct geometry_traits {
 	typedef typename _Geometry::value_type value_type;
 	typedef typename _Geometry::parameter parameter;
 	static const std::size_t Dimension = _Geometry::Dimension;
+
 };
+
+#define GK_GEOMETRY_TYPEDEF(GEOMETRY) \
+		typedef geometry_traits<GEOMETRY > traits_type; \
+		typedef typename traits_type::category category; \
+		typedef typename traits_type::value_type value_type; \
+		typedef typename traits_type::parameter parameter; \
+		typedef typename traits_type::vector_type vector_type
 
 } // namespace gk
 

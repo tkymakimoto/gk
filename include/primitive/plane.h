@@ -23,11 +23,13 @@ namespace gk {
  * @author Takuya Makimoto
  * @date 2015
  */
-template<typename _T, std::size_t _Dimension>
+template<typename _T>
 class plane: public geometry<plane_tag, _T, GK::GK_3D, vector<_T, GK::GK_2D>> {
 public:
 
-	GK_VECTOR_TYPEDEF(_T,_Dimension);
+	typedef geometry<plane_tag, _T, GK::GK_3D, vector<_T, GK::GK_2D> > base;
+
+	GK_GEOMETRY_TYPEDEF(base);
 
 	typedef direction<_Dimension> direction_type;
 
@@ -183,8 +185,8 @@ private:
 	}
 };
 
-template<typename _T, std::size_t _Dimension>
-direction<_Dimension> direction_of(const plane<_T, _Dimension>& x) {
+template<typename _T>
+direction<GK::GK_3D> direction_of(const plane<_T>& x) {
 	return x.normal();
 }
 

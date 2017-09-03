@@ -53,7 +53,7 @@ struct vector {
 #if __cplusplus >= 201103L
 #define GK_VECTOR_TYPEDEF(TYPE, DIMENSION) \
 		   typedef vector<TYPE, DIMENSION> vector_type; \
-		   typedef TYPE value_type;
+		   typedef TYPE value_type
 
 #else
 #define GK_VECTOR_TYPEDEF(TYPE, DIMENSION) \
