@@ -9,6 +9,7 @@
 #define GKGEOMETRY_H_
 
 #include "gkdef.h"
+#include "gkvector.h"
 
 /**
  * @defgroup geometry_tags Geometry Tags
@@ -92,8 +93,11 @@ struct sphere_tag: public surface_tag {
 };
 
 template<typename _Category, typename _T, std::size_t _Dimension,
-		typename _Parameter = void>
-struct geometry;
+		typename _Parameter>
+struct geometry {
+private:
+	geometry();
+};
 
 #define GK_GEOMETRY_BASE_TEMPLATE_CLASS(CATEGORY) \
 	template<typename _T, std::size_t _Dimension, typename _Parameter> \
@@ -102,12 +106,11 @@ struct geometry;
 		typedef _T value_type; \
 		typedef _Parameter parameter; \
 		typedef vector<_T, _Dimension> vector_type; \
-};
+	};
 
+GK_GEOMETRY_BASE_TEMPLATE_CLASS(point_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(direction_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(line_tag)
-//GK_GEOMETRY_BASE_TEMPLATE_CLASS(ray_tag)
-//GK_GEOMETRY_BASE_TEMPLATE_CLASS(segment_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(circle_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(free_curve_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(plane_tag)
@@ -132,6 +135,17 @@ struct geometry_traits {
 		typedef typename traits_type::value_type value_type; \
 		typedef typename traits_type::parameter parameter; \
 		typedef typename traits_type::vector_type vector_type
+
+/**
+ * @brief Outputs a direction of a geometry, @a a.
+ *
+ * @tparam _T The type of the geometry.
+ * @param a
+ * @return
+ */
+template<typename _Geometry>
+direction<geometry_traits<_Geometry>::Dimension> direction_of(
+		const _Geometry& a);
 
 } // namespace gk
 

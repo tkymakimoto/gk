@@ -18,6 +18,8 @@ int main(int argc, char** argv) {
 
 	std::cout << w << std::endl;
 
+	gk::version::major_value();
+
 	exit(EXIT_SUCCESS);
 }
 

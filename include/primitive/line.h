@@ -9,7 +9,8 @@
 #define PRIMITIVE_LINE_H_
 
 #include "../gkvector.h"
-#include "../gkcurve.h"
+#include "../gkgeometry.h"
+//#include "../gkcurve.h"
 #include "../gkaabb.h"
 
 #include <vector>
@@ -29,16 +30,18 @@ namespace gk {
  * @f$\mathbf{d}@f$ which are inner vector.
  *
  * @tparam _T Type of value.
- * @tparam D Dimension of this object.
+ * @tparam _Dimension Dimension of this object.
  * @author Takuya Makimoto
  * @date 2015/12/01
  */
 template<typename _T, std::size_t _Dimension = GK::GK_3D>
-class line: public geometry<line_tag, _T, _Dimension> {
+class line: public geometry<line_tag, _T, _Dimension, _T> {
 public:
-	typedef geometry<line_tag, _T, _Dimension> base;
+	typedef geometry<line_tag, _T, _Dimension, _T> base;
 
 	GK_GEOMETRY_TYPEDEF(base);
+
+	typedef direction<_Dimension> direction_type;
 
 private :
 	template<typename Vector>
@@ -155,30 +158,36 @@ private:
  * @author Takuya Makimoto
  * @date 2015/12/01
  */
-template<typename _T, std::size_t _Dimension>
-class segment: geometry<segment_tag, _T, _Dimension> {
+template<typename _T, std::size_t _Dimension = GK::GK_3D>
+class segment: geometry<line_tag, _T, _Dimension, float_type> {
 public:
+
+	typedef geometry<line_tag, _T, _Dimension, float_type> base;
+
+	GK_GEOMETRY_TYPEDEF(base);
+
+	typedef direction<_Dimension> direction_type;
 
 public:
 	segment() :
-			edge_() {
+	edge_() {
 	}
 
 	segment(const segment& other) :
-			edge_() {
+	edge_() {
 		this->edge_[GK::StartEdge] = other.edge_[GK::StartEdge];
 		this->edge_[GK::EndEdge] = other.edge_[GK::EndEdge];
 	}
 
 	segment(const vector_type& start, const vector_type& end) :
-			edge_() {
+	edge_() {
 		this->edge_[GK::StartEdge] = start;
 		this->edge_[GK::EndEdge] = end;
 	}
 
 	template<typename Vector>
 	segment(const Vector& start, const Vector& end) :
-			edge_() {
+	edge_() {
 		assign(start, this->edge_[GK::StartEdge]);
 		assign(end, this->edge_[GK::EndEdge]);
 	}
@@ -217,7 +226,7 @@ public:
 	template<typename Parameter>
 	vector_type operator()(const Parameter& t) const {
 		const vector_type v = this->edge_[GK::EndEdge]
-				- this->edge_[GK::StartEdge];
+		- this->edge_[GK::StartEdge];
 		return this->edge_[GK::StartEdge] + t * v;
 	}
 

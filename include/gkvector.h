@@ -16,7 +16,7 @@
 
 #include "gkdef.h"
 #include "gkfunctional.h"
-#include "gkgeometry.h"
+//#include "gkgeometry.h"
 #include "gkquaternion.h"
 
 #include <numeric>
@@ -168,14 +168,26 @@ typename vector_traits<_Vector>::value_type norm(const _Vector& v) {
 //
 //}
 
-template<typename Vector1, typename Vector2 = Vector1, typename Result = Vector1>
-struct cross {
-	typedef Vector1 first_argument_type;
-	typedef Vector2 second_argument_type;
-	typedef Result result_type;
+template<typename _T>
+vector<product<_T, _T>, GK::GK_3D> cross(const vector<_T, GK::GK_3D>& u,
+		const vector<_T, GK::GK_3D>& v) {
+	vector<product<_T, _T>, GK::GK_3D> r;
+	r[GK::X] = u[GK::Y] * v[GK::Z] - u[GK::Z] * v[GK::Y];
+	r[GK::Y] = u[GK::Z] * v[GK::X] - u[GK::X] * v[GK::Z];
+	r[GK::Z] = u[GK::X] * v[GK::Y] - u[GK::Y] * v[GK::X];
+	return r;
+}
 
-	Result operator()(const Vector1& u, const Vector2& v) const {
-		Result r;
+template<typename _T>
+struct cross_function {
+//	typedef Vector1 first_argument_type;
+//	typedef Vector2 second_argument_type;
+//	typedef Result result_type;
+	typedef _T value_type;
+	typedef vector<_T, GK::GK_3D> vector_type;
+
+	vector_type operator()(const vector_type& u, const vector_type& v) const {
+		vector_type r;
 		r[GK::X] = u[GK::Y] * v[GK::Z] - u[GK::Z] * v[GK::Y];
 		r[GK::Y] = u[GK::Z] * v[GK::X] - u[GK::X] * v[GK::Z];
 		r[GK::Z] = u[GK::X] * v[GK::Y] - u[GK::Y] * v[GK::X];
@@ -362,16 +374,6 @@ std::basic_ostream<CharT, Traits>& operator<<(
 
 	return os;
 }
-
-/**
- * @brief Outputs a direction of a geometry, @a a.
- *
- * @tparam _T The type of the geometry.
- * @param a
- * @return
- */
-template<typename _T>
-direction<geometry_traits<_T>::Dimension> direction_of(const _T& a);
 
 /**
  * @brief Computes a direction of a vector.

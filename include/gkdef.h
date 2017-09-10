@@ -32,7 +32,7 @@ const bool GK_Max = true;
 #define GK_FLOAT_NEGATIVE_ONE -1.0
 
 namespace gk {
-
+std::size_t a;
 typedef std::size_t size_t;
 
 /*
@@ -104,8 +104,8 @@ struct GK {
 		GK_3D = 3 ///< 3 dimension.
 	} Dimension;
 
-	static const std::size_t Dimension2 = 2;
-	static const std::size_t Dimension3 = 3;
+//	static const std::size_t Dimension2 = 2;
+//	static const std::size_t Dimension3 = 3;
 
 	/**
 	 * @brief Enum about precisions of float types.

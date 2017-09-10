@@ -19,6 +19,7 @@ struct product_type_definition {
 
 template<typename T1, typename T2>
 using product=typename product_type_definition<T1,T2>::value_type;
+#else
 #endif
 
 template<typename T1, typename T2>
