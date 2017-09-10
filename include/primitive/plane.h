@@ -31,7 +31,7 @@ public:
 
 	GK_GEOMETRY_TYPEDEF(base);
 
-	typedef direction<_Dimension> direction_type;
+	typedef direction<GK::GK_3D> direction_type;
 
 public:
 
@@ -158,17 +158,17 @@ private:
 	direction_type u_direction_() const {
 		if (this->normal_[GK::X]
 				== typename direction_type::value_type(GK_FLOAT_ZERO)) {
-			return basis<_Dimension>()[GK::X];
+			return basis<GK::GK_3D>()[GK::X];
 		}
 
 		if (this->normal_[GK::Y]
 				== typename direction_type::value_type(GK_FLOAT_ZERO)) {
-			return basis<_Dimension>()[GK::Y];
+			return basis<GK::GK_3D>()[GK::Y];
 		}
 
 		if (this->normal_[GK::Z]
 				== typename direction_type::value_type(GK_FLOAT_ZERO)) {
-			return basis<_Dimension>()[GK::Z];
+			return basis<GK::GK_3D>()[GK::Z];
 		}
 
 		vector_type u;

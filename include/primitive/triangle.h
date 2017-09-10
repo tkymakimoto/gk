@@ -138,7 +138,7 @@ private:
  */
 template<typename _T, std::size_t _Dimension>
 direction<_Dimension> direction_of(const triangle<_T, _Dimension>& a) {
-	return cross<direction < _Dimension>()(normalize(a.u()), normalize(a.v()));
+	return direction<_Dimension>(cross(a.u(), a.v()));
 }
 
 namespace inner {

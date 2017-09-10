@@ -23,30 +23,31 @@ namespace gk {
  * @date 2015/12/14
  */
 struct version {
-	static size_t major() {
-		return GK_API_MAJOR;
+	static std::size_t major_value() {
+		return std::size_t(GK_API_MAJOR);
 	}
 
-	static size_t minor() {
-		return GK_API_MINOR;
+	static std::size_t minor_value() {
+		return std::size_t(GK_API_MINOR);
 	}
 
-	static size_t patch() {
-		return GK_API_PATCH;
+	static std::size_t patch_value() {
+		return std::size_t(GK_API_PATCH);
 	}
 
-	static std::string version() {
+	static std::string str() {
 		std::stringstream ss;
 		ss << GK_API_MAJOR << '.' << GK_API_MINOR << '.' << GK_API_PATCH;
 		return ss.str();
 	}
 
-	static bool isLeast(size_t major, size_t minor, size_t patch) {
+	static bool isLeast(std::size_t major, std::size_t minor,
+			std::size_t patch) {
 		return (GK_API_MAJOR == major) && (GK_API_MINOR == minor)
 				&& (GK_API_PATCH == patch);
 	}
 };
 
-}  // namespace gk
+} // namespace gk
 
 #endif /* VERSION_H_ */

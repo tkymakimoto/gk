@@ -9,6 +9,7 @@
 #define PRIMITIVE_POINT_H_
 
 #include "../gkvector.h"
+#include "../gkgeometry.h"
 
 namespace gk {
 
