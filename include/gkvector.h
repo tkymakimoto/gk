@@ -312,42 +312,42 @@ struct vector_traits<direction<_Dimension> > {
 	static const std::size_t Dimension = _Dimension; ///< A dimension size of a vector space.
 	static const bool IsHomogeneous = false;
 
-	typedef typename direction<Dimension>::const_iterator iterator;
-	typedef typename direction<Dimension>::const_iterator const_iterator;
-	typedef typename direction<Dimension>::const_reverse_iterator reverse_iterator;
-	typedef typename direction<Dimension>::const_reverse_iterator const_reverse_iterator;
-
-	static const_iterator begin(const direction<Dimension>& d) {
-		return d.begin();
-	}
-
-	static iterator begin(direction<Dimension>& d) {
-		return d.begin();
-	}
-
-	static const_iterator end(const direction<Dimension>& d) {
-		return d.end();
-	}
-
-	static iterator end(direction<Dimension>& d) {
-		return d.end();
-	}
-
-	static const_reverse_iterator rbegin(const direction<Dimension>& d) {
-		return d.rbegin();
-	}
-
-	static reverse_iterator rbegin(direction<Dimension>& d) {
-		return d.rbegin();
-	}
-
-	static const_reverse_iterator rend(const direction<Dimension>& d) {
-		return d.rend();
-	}
-
-	static reverse_iterator rend(direction<Dimension>& d) {
-		return d.rend();
-	}
+//	typedef typename direction<Dimension>::const_iterator iterator;
+//	typedef typename direction<Dimension>::const_iterator const_iterator;
+//	typedef typename direction<Dimension>::const_reverse_iterator reverse_iterator;
+//	typedef typename direction<Dimension>::const_reverse_iterator const_reverse_iterator;
+//
+//	static const_iterator begin(const direction<Dimension>& d) {
+//		return d.begin();
+//	}
+//
+//	static iterator begin(direction<Dimension>& d) {
+//		return d.begin();
+//	}
+//
+//	static const_iterator end(const direction<Dimension>& d) {
+//		return d.end();
+//	}
+//
+//	static iterator end(direction<Dimension>& d) {
+//		return d.end();
+//	}
+//
+//	static const_reverse_iterator rbegin(const direction<Dimension>& d) {
+//		return d.rbegin();
+//	}
+//
+//	static reverse_iterator rbegin(direction<Dimension>& d) {
+//		return d.rbegin();
+//	}
+//
+//	static const_reverse_iterator rend(const direction<Dimension>& d) {
+//		return d.rend();
+//	}
+//
+//	static reverse_iterator rend(direction<Dimension>& d) {
+//		return d.rend();
+//	}
 };
 
 template<size_t _Dimension>

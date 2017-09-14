@@ -13,10 +13,9 @@
 
 namespace gk {
 
-template<typename _T, std::size_t _Dimension>
-bool orientation(const plane<_T, _Dimension>& p,
-		const direction<_Dimension>& d) {
-	const direction<_Dimension> u = normalize(p.reference() - d);
+template<typename _T>
+bool orientation(const plane<_T>& p, const direction<GK::GK_3D>& d) {
+	const direction<GK::GK_3D> u = normalize(p.reference() - d);
 	return !std::signbit(dot(u, p.normal()));
 }
 
@@ -75,12 +74,12 @@ vector<_T, _Dimension> nearest(const segment<_T, _Dimension>& segment,
 			r);
 }
 
-template<typename _T, std::size_t _Dimension>
-vector<_T, _Dimension> nearest(const plane<_T, _Dimension>& plane,
-		const vector<_T, _Dimension>& r) {
+template<typename _T>
+vector<_T, GK::GK_3D> nearest(const plane<_T>& plane,
+		const vector<_T, GK::GK_3D>& r) {
 
-	typedef vector<_T, _Dimension> vector_type;
-	typedef direction<_Dimension> direction;
+	typedef vector<_T, GK::GK_3D> vector_type;
+	typedef direction<GK::GK_3D> direction;
 	const direction n = plane.normal();
 	const vector_type p = plane.reference() - r;
 
@@ -132,11 +131,11 @@ vector<_T, _Dimension> nearest(const plane<_T, _Dimension>& plane,
 //		return std::make_pair(s, t);
 //	}
 //}
-template<typename _T, std::size_t _Dimension>
-std::pair<_T, _T> nearest_between(const line<_T, _Dimension>& a,
-		const plane<_T, _Dimension>& b) {
+template<typename _T>
+std::pair<_T, _T> nearest_between(const line<_T, GK::GK_3D>& a,
+		const plane<_T>& b) {
 	typedef _T length_type;
-	typedef direction<_Dimension> direction_type;
+	typedef direction<GK::GK_3D> direction_type;
 
 	const direction_type u = a.direction();
 	const direction_type n = b.normal();
@@ -152,16 +151,16 @@ std::pair<_T, _T> nearest_between(const line<_T, _Dimension>& a,
 
 		const length_type t = dot(b.reference() - a.reference(), n) / dot(u, n);
 
-		const vector<_T, _Dimension> r = a(t) - b.reference();
+		const vector<_T, GK::GK_3D> r = a(t) - b.reference();
 		return std::make_pair(t,
 				make_plane_parameter(dot(r, b.u_direction()),
 						dot(r, b.v_direction())));
 	}
 }
 
-template<typename _T, std::size_t _Dimension>
-std::pair<_T, _T> nearest_between(const plane<_T, _Dimension>& a,
-		const line<_T, _Dimension>& b) {
+template<typename _T>
+std::pair<_T, _T> nearest_between(const plane<_T>& a,
+		const line<_T, GK::GK_3D>& b) {
 	typedef _T length_type;
 
 	const std::pair<length_type, length_type> result = nearest_between(b, a);
@@ -178,8 +177,8 @@ OutputIterator project(const Projected& a, const Support& b,
 		OutputIterator result);
 
 template<typename _T, std::size_t _Dimension, typename OutputIterator>
-OutputIterator project(const vector<_T, _Dimension>& a,
-		const plane<_T, _Dimension>& b, OutputIterator result) {
+OutputIterator project(const vector<_T, _Dimension>& a, const plane<_T>& b,
+		OutputIterator result) {
 
 }
 
@@ -224,6 +223,8 @@ OutputIterator intersect(const segment<_T, _Dimension>& a,
 		const segment<_T, _Dimension>& b, const Tolerance& epsilon,
 		OutputIterator result) {
 
+	typedef typename geometry_traits<segment<_T, _Dimension> >::parameter parameter;
+
 	std::pair<_T, _T> T = nearest_between(
 			line<_T, _Dimension>(a[GK::StartEdge], a[GK::EndEdge]),
 			line<_T, _Dimension>(b[GK::StartEdge], b[GK::EndEdge]));
@@ -264,19 +265,21 @@ OutputIterator intersect(const plane<Vector>& a, const plane<Vector>& b,
 	return result;
 }
 
-template<typename Vector, typename Tolerance, typename OutputIterator>
-OutputIterator intersect(const line<Vector>& a, const segment<Vector>& b,
-		const Tolerance& epsilon, OutputIterator result) {
+template<typename _T, std::size_t _Dimension, typename Tolerance,
+		typename OutputIterator>
+OutputIterator intersect(const line<_T, _Dimension>& a,
+		const segment<_T, _Dimension>& b, const Tolerance& epsilon,
+		OutputIterator result) {
 
-	typedef typename geometry_traits<line<Vector> >::parameter line_parameter;
+	typedef typename geometry_traits<line<_T, _Dimension> >::parameter line_parameter;
 	std::pair<line_parameter, line_parameter> _T = nearest_between(a,
-			line<Vector>(b[GK::StartEdge], b[GK::EndEdge]));
+			line<_T, _Dimension>(b[GK::StartEdge], b[GK::EndEdge]));
 
-	typedef typename geometry_traits<segment<Vector> >::parameter parameter;
-	const parameter t = _T.second / curve_traits < segment<Vector>
+	typedef typename geometry_traits<segment<_T, _Dimension> >::parameter parameter;
+	const parameter t = _T.second / curve_traits < segment<_T, _Dimension>
 			> ::length_type(b);
-	const std::pair<parameter, parameter> D = curve_traits < segment<Vector>
-			> ::domain(b);
+	const std::pair<parameter, parameter> D = curve_traits
+			< segment<_T, _Dimension> > ::domain(b);
 
 	if (t < D.first || D.second < t) {
 		return result;
