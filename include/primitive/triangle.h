@@ -134,11 +134,10 @@ private:
  * @param a
  * @return
  *
- * @see inner::direction_of_triangle()
  */
-template<typename _T, std::size_t _Dimension>
-direction<_Dimension> direction_of(const triangle<_T, _Dimension>& a) {
-	return direction<_Dimension>(cross(a.u(), a.v()));
+template<typename _T>
+direction<GK::GK_3D> direction_of(const triangle<_T, GK::GK_3D>& a) {
+	return direction<GK::GK_3D>(cross(a.u(), a.v()));
 }
 
 namespace inner {
@@ -154,9 +153,10 @@ namespace inner {
  *
  * @see area_of_triangle(const Vector&, const Vector&, const Vector&, dimension_category<GK::GK_3D>)
  */
-template<typename Vector, typename AreaValue>
-AreaValue area_of_triangle(const Vector& first, const Vector& second,
-		const Vector& third, dimension_tag<GK::GK_2D>) {
+template<typename _T, typename AreaValue>
+AreaValue area_of_triangle(const vector<_T, GK::GK_2D>& first,
+		const vector<_T, GK::GK_2D>& second, const vector<_T, GK::GK_2D>& third,
+		dimension_tag<GK::GK_2D>) {
 
 }
 
@@ -168,21 +168,22 @@ AreaValue area_of_triangle(const Vector& first, const Vector& second,
  * @param
  * @return
  */
-template<typename Vector, typename AreaValue>
-AreaValue area_of_triangle(const Vector& first, const Vector& second,
-		const Vector& third, dimension_tag<GK::GK_3D>) {
+template<typename _T, typename AreaValue>
+AreaValue area_of_triangle(const vector<_T, GK::GK_3D>& first,
+		const vector<_T, GK::GK_3D>& second, const vector<_T, GK::GK_3D>& third,
+		dimension_tag<GK::GK_3D>) {
 
 }
 
 }  // namespace inner
 
 template<typename _T, typename AreaValue>
-struct area {
+struct area_function {
 	AreaValue operator()(const _T&) const;
 };
 
 template<typename _T, std::size_t _Dimension, typename AreaValue>
-struct area<triangle<_T, _Dimension>, AreaValue> {
+struct area_function<triangle<_T, _Dimension>, AreaValue> {
 	AreaValue operator()(const triangle<_T, _Dimension>& a) const {
 //		const dot<Vector, Vector, AreaValue> dot;
 		const AreaValue dot_u = dot(a.u(), a.u());
@@ -192,300 +193,11 @@ struct area<triangle<_T, _Dimension>, AreaValue> {
 	}
 };
 
-}  // namespace gk
+template<typename _T, std::size_t _Dimension>
+product<_T, _T> area(const triangle<_T, _Dimension>& a) {
 
-//#include <vector/gkvector.h>
-//
-//class gktriangle_parameter {
-//
-//};
-//
-///**
-// * @brief
-// *
-// * @author Takuya Makimoto
-// * @date 2015
-// */
-//template<GK::DimensionNumber Size>
-//class gktriangle {
-//public:
-//#if __cplusplus >= 201103L
-//#else
-//    typedef gkvector<Size>* iterator;
-//    typedef const gkvector<Size>* const_iterator;
-//    typedef std::reverse_iterator<iterator> reverse_iterator;
-//    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
-//
-//#endif
-//
-//    typedef gkvector<Size> vector_type;
-//
-//    enum {
-//        First, Second, Third, Size
-//    };
-//
-//    /**
-//     * @brief
-//     */
-//    struct area_parameter {
-//        gkfloat first;
-//        gkfloat second;
-//        gkfloat third;
-//
-//        area_parameter() :
-//                first(), second(), third() {
-//        }
-//
-//        area_parameter(const area_parameter& other) :
-//                first(other.first), second(other.second), third(other.third) {
-//
-//        }
-//
-//        area_parameter(gkfloat first, gkfloat second, gkfloat third) :
-//                first(first), second(second), third(third) {
-//
-//        }
-//
-//        ~area_parameter() {
-//
-//        }
-//    };
-//
-//    typedef area_parameter parameter;
-//
-//public:
-//    gktriangle() :
-//            vertices_() {
-//
-//    }
-//
-//    gktriangle(const gktriangle& other) :
-//            vertices_() {
-//        this->vertices_[First] = other.vertices_[First];
-//        this->vertices_[Second] = other.vertices_[Second];
-//        this->vertices_[Third] = other.vertices_[Third];
-//    }
-//
-//    gktriangle(const gkinvalid& invalid) :
-//            vertices_() {
-//
-//    }
-//
-//    gktriangle(const gkvector<Size>& first,
-//            const gkvector<Size>& second, const gkvector<Size>& third) :
-//            vertices_() {
-//        this->vertices_[First] = first;
-//        this->vertices_[Second] = second;
-//        this->vertices_[Third] = third;
-//    }
-//
-//    ~gktriangle() {
-//
-//    }
-//
-//    bool valid() const;
-//
-//    const gkvector<Size>& first() const {
-//        return this->vertices_[First];
-//    }
-//
-//    gkvector<Size>& first() {
-//        return this->vertices_[First];
-//    }
-//
-//    const gkvector<Size>& second() const {
-//        return this->vertices_[Second];
-//    }
-//
-//    gkvector<Size>& second() {
-//        return this->vertices_[Second];
-//    }
-//
-//    const gkvector<Size>& third() const {
-//        return this->vertices_[Third];
-//    }
-//
-//    gkvector<Size>& third() {
-//        return this->vertices_[Third];
-//    }
-//
-//    void set(const vector_type& first, const vector_type& second,
-//            const vector_type& third) {
-//        this->set_(first, second, third);
-//    }
-//
-//    const_iterator begin() const;
-//    iterator begin();
-//
-//    const_iterator end() const;
-//    iterator end();
-//
-//    const_reverse_iterator rbegin() const;
-//    reverse_iterator rbegin();
-//
-//    const_reverse_iterator rend() const;
-//    reverse_iterator rend();
-//
-//    void reverse() {
-//        std::swap(this->vertices_[First], this->vertices_[Third]);
-//    }
-//
-//    gkfloat area() const {
-//        return this->area_();
-//    }
-//
-//    void translate(const gkvector<Size>& translation) {
-//        this->vertices_[First] += translation;
-//        this->vertices_[Second] += translation;
-//        this->vertices_[Third] += translation;
-//    }
-//
-//    void rotate(const gkrotation<Size>& rotation) {
-//        Eigen::Matrix<gkfloat, Size, Size> R = rotation_matrix(
-//                rotation);
-//        this->vertices_[First] *= R;
-//        this->vertices_[Second] *= R;
-//        this->vertices_[Third] *= R;
-//    }
-//
-//    void scale(gkfloat factor) {
-//        this->vertices_[First] *= factor;
-//        this->vertices_[Second] *= factor;
-//        this->vertices_[Third] *= factor;
-//    }
-//
-//    const vector_type& operator[](gksize index) const {
-//        return this->vertices_[index];
-//    }
-//
-//    vector_type& operator[](gksize index) {
-//        return this->vertices_[index];
-//    }
-//
-//    /**
-//     * @brief Computes the position.
-//     * @param t
-//     * @return
-//     */
-//    vector_type operator()(const area_parameter& t) const {
-//        const gkfloat f = 1.0 / (t.first + t.second + t.third);
-//
-//        const vector_type u = f * t.second
-//                * (this->vertices_[Second] - this->vertices_[First])
-//                + this->vertices_[First];
-//
-//        const vector_type v = f * t.third
-//                * (this->vertices_[Third] - this->vertices_[First])
-//                + this->vertices_[First];
-//
-//        return v + u;
-//    }
-//
-//    gktriangle& operator=(const gktriangle& rhs) {
-//        if (&rhs == this) {
-//            return *this;
-//        }
-//
-//        this->vertices_[First] = rhs.vertices_[First];
-//        this->vertices_[Second] = rhs.vertices_[Second];
-//        this->vertices_[Third] = rhs.vertices_[Third];
-//
-//        return *this;
-//    }
-//
-//private:
-//    void set_(const vector_type& first, const vector_type& second,
-//            const vector_type& third) {
-//        this->vertices_[First] = first;
-//        this->vertices_[Second] = second;
-//        this->vertices_[Third] = third;
-//    }
-//
-//    gkfloat area_() const;
-//
-//private:
-//#if __cplusplus>=201103L
-//    std::array<gkvector<DimensionNumber>,GK_Triangle> vertices_;
-//#else
-//    vector_type vertices_[Size];
-//#endif
-//
-//};
-//
-//template<>
-//gkfloat gktriangle<GK::GK_2D>::area_() const {
-//    return gkfabs(
-//            0.5
-//                    * cross(this->vertices_[Second] - this->vertices_[First],
-//                            this->vertices_[Third] - this->vertices_[First]));
-//}
-//
-//template<>
-//gkfloat gktriangle<GK::GK_3D>::area_() const {
-//    return 0.5
-//            * norm(
-//                    cross(this->vertices_[Second] - this->vertices_[First],
-//                            this->vertices_[Third] - this->vertices_[First]));
-//}
-//
-//template<GK::DimensionNumber Size>
-//bool operator==(const gktriangle<Size>& triangle,
-//        const gkinvalid& invalid) {
-//    return (triangle.first() == invalid || triangle.second() == invalid
-//            || triangle.third() == invalid);
-//}
-//
-//template<GK::DimensionNumber Size>
-//bool operator==(const gkinvalid& invalid,
-//        const gktriangle<Size>& triangle) {
-//    return (triangle == invalid);
-//}
-//
-//template<GK::DimensionNumber Size>
-//bool operator!=(const gktriangle<Size>& triangle,
-//        const gkinvalid& invalid) {
-//    return !(triangle == invalid);
-//}
-//
-//template<GK::DimensionNumber Size>
-//bool operator!=(const gkinvalid& invalid,
-//        const gktriangle<Size>& triangle) {
-//    return (triangle != invalid);
-//}
-//
-//template<GK::DimensionNumber Size>
-//bool operator==(const gktriangle<Size>& a,
-//        const gktriangle<Size>& b) {
-//    return (a.first() == b.first() && a.second() == b.second(), a.third()
-//            == b.third());
-//}
-//
-//template<GK::DimensionNumber Size>
-//bool operator!=(const gktriangle<Size>& a,
-//        const gktriangle<Size>& b) {
-//    return !(a == b);
-//}
-//
-//bool orientation(const gktriangle<GK::GK_2D>& triangle) {
-//    return !gksignbit(
-//            cross(triangle.second() - triangle.first(),
-//                    triangle.third() - triangle.first()));
-//}
-//
-//gkdirection<GK::GK_3D> normal(const gktriangle<GK::GK_3D>& triangle) {
-//    const gkvector<GK::GK_3D> v = cross(triangle.second() - triangle.first(),
-//            triangle.third() - triangle.first());
-//
-//    return normalize(v);
-//}
-//
-////gkdirection<GK::GK_3D> normal(const gktriangle<GK::GK_3D>& triangle);
-//
-//template<GK::DimensionNumber Size>
-//bool predict_intersect(const gktriangle<Size>& a,
-//        const gktriangle<Size>& b);
-//
-//template<GK::DimensionNumber Size>
-//gkfloat area(const gktriangle<Size>& triangle);
+}
+
+}  // namespace gk
 
 #endif /* PRIMITIVE_TRIANGLE_H_ */

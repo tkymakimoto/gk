@@ -151,10 +151,13 @@ struct check_same_dimension<_Dimension, _Dimension> {
 };
 
 template<typename _T1, typename _T2>
-struct check_same_type;
+struct check_same_type {
+	typedef void value_type;
+};
 
 template<typename _T>
 struct check_same_type<_T, _T> {
+	typedef _T value_type;
 };
 
 }  // namespace gk
