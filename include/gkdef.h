@@ -32,7 +32,7 @@ const bool GK_Max = true;
 #define GK_FLOAT_NEGATIVE_ONE -1.0
 
 namespace gk {
-std::size_t a;
+
 typedef std::size_t size_t;
 
 /*
@@ -111,8 +111,8 @@ struct GK {
 	 * @brief Enum about precisions of float types.
 	 */
 	typedef enum {
-		GK_SinglePrecision = __SIZEOF_FLOAT__,          ///< Single precision
-		GK_DoublePrecision = __SIZEOF_DOUBLE__,         ///< Double precision
+		GK_SinglePrecision = __SIZEOF_FLOAT__,   ///< Single precision
+		GK_DoublePrecision = __SIZEOF_DOUBLE__,  ///< Double precision
 		GK_LongDoublePrecision = __SIZEOF_LONG_DOUBLE__, ///< Long double precision
 	} Precision;
 
@@ -144,7 +144,10 @@ struct GK {
 };
 
 template<std::size_t _Dimension1, std::size_t _Dimension2>
-struct check_same_dimension;
+struct check_same_dimension {
+private:
+	check_same_dimension();
+};
 
 template<std::size_t _Dimension>
 struct check_same_dimension<_Dimension, _Dimension> {

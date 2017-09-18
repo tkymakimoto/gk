@@ -46,7 +46,8 @@ product<_T1, _T2> operator*(const _T1& x, const _T2& y) {
 	return x * y;
 }
 
-template<typename _T1, typename _T2, typename Result = product<_T1, _T2> >
+template<typename _T1, typename _T2, typename Result = product<_T1,
+		_T2> >
 struct multiplier {
 	typedef _T1 first_argument_type;
 	typedef _T2 second_argument_type;
