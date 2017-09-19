@@ -53,18 +53,24 @@ public :
 		return this->x_[n];
 	}
 
-	point& operator=(const point& q) {
-		if (*q == this) {
+	point& operator=(const point& p) {
+		if (*p == this) {
 			return *this;
 		}
 
-		this->x_ = q.x_;
+		this->x_ = p.x_;
+		return *this;
+	}
+
+	point& operator=(const vector_type& v) {
+		this->x_=v;
 		return *this;
 	}
 
 	template<typename Vector>
 	point& operator=(const Vector& v) {
 		this->assign_(v);
+		return *this;
 	}
 
 private:
