@@ -12,19 +12,19 @@
 
 namespace gk {
 
+#if __cplusplus >= 201103L
 template<typename _Geometry1, typename _Geometry2>
 struct distance_definition_type {
 	typedef geometry_traits<_Geometry1> traits1;
 	typedef geometry_traits<_Geometry2> traits2;
 
-	check_same_dimension<traits1::Dimension, traits2::Dimension> ;
+	// Checking each dimension.
+	typedef check_same_dimension<traits1::Dimension, traits2::Dimension>::value_type check_dimension;
 
 	typedef typename check_same_type<typename traits1::value_type,
 			typename traits2::value_type>::value_type value_type;
 
 };
-
-#if __cplusplus >= 201103L
 
 template<typename _Geometry1, typename _Geometry2>
 using distance_type=distance_definition_type<_Geometry1,_Geometry2>::value_type;
@@ -34,11 +34,17 @@ using distance_type=distance_definition_type<_Geometry1,_Geometry2>::value_type;
 
 namespace inner {
 template<typename _Point1, typename _Point2>
-distance_type<_Point1, _Point2> distance(const _Point1& a,
-		const _Point2& b, point_tag, point_tag,
-		dimension_tag<GK::GK_2D>) {
+distance_type<_Point1, _Point2> distance(const _Point1& a, const _Point2& b,
+		point_tag, point_tag, dimension_tag<GK::GK_2D>) {
 
 	return std::sqrt(a[GK::X] * b[GK::X] + a[GK::Y] * b[GK::Y]);
+}
+
+template<typename _Point1, typename _Point2>
+distance_type<_Point1, _Point2> distance(const _Point1& a, const _Point2& b,
+		point_tag, point_tag, dimension_tag<GK::GK_3D>) {
+	return std::sqrt(
+			a[GK::X] * b[GK::X] + a[GK::Y] * b[GK::Y] + a[GK::Z] * b[GK::Z]);
 }
 
 }  // namespace inner

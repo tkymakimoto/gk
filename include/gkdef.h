@@ -145,12 +145,14 @@ struct GK {
 
 template<std::size_t _Dimension1, std::size_t _Dimension2>
 struct check_same_dimension {
-private:
-	check_same_dimension();
+	typedef void value_type;
+	const value_type Dimension;
 };
 
 template<std::size_t _Dimension>
 struct check_same_dimension<_Dimension, _Dimension> {
+	typedef std::size_t value_type;
+	const value_type Dimension = _Dimension;
 };
 
 template<typename _T1, typename _T2>
