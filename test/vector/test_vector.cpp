@@ -20,6 +20,9 @@ int main(int argc, char** argv) {
 
 	gk::version::major_value();
 
+	gk::product<double, float> t_double = float(4.3);
+	std::cout << t_double << std::endl;
+
 	exit(EXIT_SUCCESS);
 }
 

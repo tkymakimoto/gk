@@ -30,6 +30,8 @@
 *.cproject
 =======git@github.com:tkymakimoto/gk.git
 Debug/
+doc/
 .settings/
 
 *.xml
+
