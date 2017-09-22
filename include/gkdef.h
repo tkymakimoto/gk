@@ -19,7 +19,7 @@
 #include <stdint.h>
 #include <limits>
 
-#include "config/gkconfig.h"
+#include "gkconfig.h"
 
 typedef bool gkselection;
 
@@ -146,7 +146,6 @@ struct GK {
 template<std::size_t _Dimension1, std::size_t _Dimension2>
 struct check_same_dimension {
 	typedef void value_type;
-	const value_type Dimension;
 };
 
 template<std::size_t _Dimension>

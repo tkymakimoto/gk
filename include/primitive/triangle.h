@@ -35,25 +35,36 @@ public:
 
 	typedef geometry<triangle_tag, _T, _Dimension, vector<_T, GK::GK_2D> > base;
 
-	GK_GEOMETRY_TYPEDEF(base);
+	GK_GEOMETRY_TYPEDEF(base)
 
 	enum {
-		First, Second, Third, EdgePointSize,
+		First, Second, Third, VerticesSize,
 	};
 
 public:
 	/**
 	 * @brief Default constructor.
 	 */
-	triangle() : x_() {
+	triangle() :
+			x_() {
 	}
 
 	/**
 	 * @brief Copy constructor.
 	 * @param other
 	 */
-	triangle(const triangle& other) : x_() {
-		std::copy(other.x_, other.x_ + EdgePointSize, this->x_);
+	triangle(const triangle& other) :
+			x_() {
+		std::copy(other.x_, other.x_ + VerticesSize, this->x_);
+	}
+
+	/**
+	 * @brief
+	 */
+	triangle(const vector_type& v1, const vector_type& v2,
+			const vector_type& v3) :
+			x_( { v1, v2, v3 }) {
+
 	}
 
 	/**
@@ -111,12 +122,12 @@ public:
 			return *this;
 		}
 
-		std::copy(rhs.x_, rhs.x_ + EdgePointSize, this->x_);
+		std::copy(rhs.x_, rhs.x_ + VerticesSize, this->x_);
 		return *this;
 	}
 
 private:
-	vector_type x_[EdgePointSize];
+	vector_type x_[VerticesSize];
 
 private:
 	vector_type u_() const {

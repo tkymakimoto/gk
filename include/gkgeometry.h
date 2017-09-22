@@ -92,13 +92,45 @@ struct plane_tag: public surface_tag, public direction_tag {
 struct sphere_tag: public surface_tag {
 };
 
+#if __cplusplus >= 201103L
 template<typename _Category, typename _T, std::size_t _Dimension,
 		typename _Parameter>
 struct geometry {
+	using category = _Category;
+	using value_type = _T;
+	using parameter = _Parameter;
+	using vector_type = vector<_T, _Dimension>;
 private:
 	geometry();
+
 };
 
+#else
+template<typename _Category, typename _T, std::size_t _Dimension,
+typename _Parameter>
+struct geometry {
+	typedef _Category category;
+	typedef _T value_type;
+	typedef _Parameter parameter;
+	typedef vector<_T, _Dimension> vector_type;
+private:
+	geometry();
+
+};
+
+#endif
+
+#if __cplusplus >= 201103L
+#define GK_GEOMETRY_BASE_TEMPLATE_CLASS(CATEGORY) \
+	template<typename _T, std::size_t _Dimension, typename _Parameter> \
+	struct geometry<CATEGORY, _T, _Dimension, _Parameter> {\
+		using category = CATEGORY;\
+		using value_type = _T;\
+		using parameter = _Parameter;\
+		using vector_type = vector<_T, _Dimension>;\
+	};
+
+#else
 #define GK_GEOMETRY_BASE_TEMPLATE_CLASS(CATEGORY) \
 	template<typename _T, std::size_t _Dimension, typename _Parameter> \
 	struct geometry<CATEGORY, _T, _Dimension, _Parameter> { \
@@ -108,12 +140,15 @@ private:
 		typedef vector<_T, _Dimension> vector_type; \
 	};
 
+#endif
+
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(point_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(direction_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(line_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(circle_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(free_curve_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(plane_tag)
+GK_GEOMETRY_BASE_TEMPLATE_CLASS(surface_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(sphere_tag)
 
 /**
@@ -126,15 +161,24 @@ struct geometry_traits {
 	typedef typename _Geometry::value_type value_type;
 	typedef typename _Geometry::parameter parameter;
 	static const std::size_t Dimension = _Geometry::Dimension;
-
+	typedef typename _Geometry::vector_type vector_type;
 };
 
-#define GK_GEOMETRY_TYPEDEF(GEOMETRY) \
-		typedef geometry_traits<GEOMETRY > traits_type; \
-		typedef typename traits_type::category category; \
-		typedef typename traits_type::value_type value_type; \
-		typedef typename traits_type::parameter parameter; \
-		typedef typename traits_type::vector_type vector_type
+#if __cplusplus >= 201103L
+#define GK_GEOMETRY_TYPEDEF(GEOMETRY)\
+		using traits_type = geometry_traits<GEOMETRY>;\
+		using category = typename traits_type::category;\
+		using value_type = typename traits_type::value_type;\
+		using parameter = typename traits_type::parameter;\
+		using vector_type = typename traits_type::vector_type;
+#else
+#define GK_GEOMETRY_TYPEDEF(GEOMETRY)\
+		typedef geometry_traits<GEOMETRY> traits_type;\
+		typedef typename traits_type::category category;\
+		typedef typename traits_type::value_type value_type;\
+		typedef typename traits_type::parameter parameter;\
+		typedef typename traits_type::vector_type vector_type;
+#endif
 
 /**
  * @brief Outputs a direction of a geometry, @a a.
