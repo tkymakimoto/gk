@@ -141,6 +141,11 @@ struct GK {
 
 	static const bool InfiniteLength = false;
 	static const bool FiniteLength = true;
+
+	template<typename _T>
+	static _T epsilon() {
+		return std::numeric_limits<_T>::epsilon();
+	}
 };
 
 template<std::size_t _Dimension1, std::size_t _Dimension2>

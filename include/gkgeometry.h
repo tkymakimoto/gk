@@ -87,14 +87,20 @@ struct plane_tag: public surface_tag, public direction_tag {
 };
 
 /**
+ * @brief Closed surface category.
+ */
+struct closed_surface_tag: public surface_tag {
+};
+
+/**
  * @brief Sphere category.
  */
-struct sphere_tag: public surface_tag {
+struct sphere_tag: public closed_surface_tag {
 };
 
 #if __cplusplus >= 201103L
 template<typename _Category, typename _T, std::size_t _Dimension,
-		typename _Parameter>
+		typename _Parameter = void>
 struct geometry {
 	using category = _Category;
 	using value_type = _T;
@@ -107,7 +113,7 @@ private:
 
 #else
 template<typename _Category, typename _T, std::size_t _Dimension,
-typename _Parameter>
+typename _Parameter = void>
 struct geometry {
 	typedef _Category category;
 	typedef _T value_type;
@@ -122,7 +128,7 @@ private:
 
 #if __cplusplus >= 201103L
 #define GK_GEOMETRY_BASE_TEMPLATE_CLASS(CATEGORY) \
-	template<typename _T, std::size_t _Dimension, typename _Parameter> \
+	template<typename _T, std::size_t _Dimension, typename _Parameter = void> \
 	struct geometry<CATEGORY, _T, _Dimension, _Parameter> {\
 		using category = CATEGORY;\
 		using value_type = _T;\
@@ -132,7 +138,7 @@ private:
 
 #else
 #define GK_GEOMETRY_BASE_TEMPLATE_CLASS(CATEGORY) \
-	template<typename _T, std::size_t _Dimension, typename _Parameter> \
+	template<typename _T, std::size_t _Dimension, typename _Parameter = void> \
 	struct geometry<CATEGORY, _T, _Dimension, _Parameter> { \
 		typedef CATEGORY category; \
 		typedef _T value_type; \
@@ -149,6 +155,7 @@ GK_GEOMETRY_BASE_TEMPLATE_CLASS(circle_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(free_curve_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(plane_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(surface_tag)
+GK_GEOMETRY_BASE_TEMPLATE_CLASS(closed_surface_tag)
 GK_GEOMETRY_BASE_TEMPLATE_CLASS(sphere_tag)
 
 /**

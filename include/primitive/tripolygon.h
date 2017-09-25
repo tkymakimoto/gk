@@ -30,9 +30,9 @@ class tripolygon: geometry<surface_tag, _T, _Dimension, void> {
 	const std::size_t VertexSize = 3;
 
 #if __cplusplus >= 201103L
-	typedef std::array<index_type, 3> indices;
+	typedef std::array<index_type, 3> cell_indices;
 #else
-	struct indices {
+	struct cell_indices {
 		index_type id[3];
 	};
 
@@ -41,10 +41,11 @@ class tripolygon: geometry<surface_tag, _T, _Dimension, void> {
 public:
 	tripolygon() :
 			vertices_() {
+
 	}
 
 	tripolygon(const tripolygon& other) :
-			vertices_(other) {
+			vertices_(other.vertices_) {
 	}
 
 	~tripolygon() {
@@ -52,7 +53,18 @@ public:
 
 	void add(const vector_type& first, const vector_type& second,
 			const vector_type& third) {
+		cell_indices n;
 
+		n[0] = vertices_.size();
+		vertices_.push_back(first);
+
+		n[1] = vertices_.size();
+		vertices_.push_back(second);
+
+		n[2] = vertices_.size();
+		vertices_.push_back(third);
+
+		indices_set.push_back(n);
 	}
 
 	void add(const triangle<_T, _Dimension>& a) {
@@ -63,8 +75,12 @@ public:
 
 	}
 
+	void refresh() {
+
+	}
+
 	triangle<_T, _Dimension> operator[](std::size_t index) const {
-		std::size_t k[] = this->indices_set[index];
+		cell_indices k = this->indices_set[index];
 		triangle<_T, _Dimension> r(this->vertices_[k[0]], this->vertices_[k[1]],
 				this->vertices_[k[2]]);
 		return r;
@@ -75,12 +91,14 @@ public:
 			return *this;
 		}
 
+		this->vertices_ = rhs.vertices_;
+		this->indices_set = rhs.indices_set;
 		return *this;
 	}
 
 private:
 	std::vector<vector_type> vertices_;
-	std::vector<indices> indices_set;
+	std::vector<cell_indices> indices_set;
 };
 
 } // namespace gk
