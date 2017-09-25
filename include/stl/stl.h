@@ -98,8 +98,6 @@ tripolygon<stl_value_type, GK::GK_3D> read_stl(const char* filename) {
 		std::cout << "color = " << color << std::endl;
 		std::cout << std::endl;
 
-//		triangle<value_type, GK::GK_3D> cell(v1, v2, v3);
-
 		polygon.add(v1, v2, v3);
 	}
 

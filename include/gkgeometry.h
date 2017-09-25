@@ -128,7 +128,7 @@ private:
 
 #if __cplusplus >= 201103L
 #define GK_GEOMETRY_BASE_TEMPLATE_CLASS(CATEGORY) \
-	template<typename _T, std::size_t _Dimension, typename _Parameter = void> \
+	template<typename _T, std::size_t _Dimension, typename _Parameter> \
 	struct geometry<CATEGORY, _T, _Dimension, _Parameter> {\
 		using category = CATEGORY;\
 		using value_type = _T;\
