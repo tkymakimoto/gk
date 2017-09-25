@@ -9,6 +9,7 @@
 #define GKAABB_H_
 
 #include "gkvector.h"
+#include "gkgeometry.h"
 
 #include <typeinfo>
 #include <algorithm>
@@ -19,13 +20,15 @@ namespace gk {
  * @brief Axis-aligned bounding box (AABB).
  *
  * @author Takuya Makimoto
- * @date 2014
+ * @date 2017/09/25
  */
-template<typename Vector>
-class aabb {
+template<typename _T, std::size_t _Dimension>
+class aabb: public geometry<closed_surface_tag, _T, _Dimension> {
 public:
-	typedef Vector vector_type;
-	static const std::size_t Dimension = vector_traits<Vector>::Dimension;
+
+	typedef geometry<closed_surface_tag, _T, _Dimension> base;
+
+	GK_GEOMETRY_TYPEDEF(base)
 
 public:
 	/**
@@ -51,22 +54,18 @@ public:
 	aabb(InputIterator first, InputIterator last) :
 			min_(), max_() {
 		typedef InputIterator iterator;
-//		typedef std::iterator_traits<InputIterator> traits;
+		iterator p = first;
+		this->min_ = *p;
+		this->max_ = *p;
 
-		{
-			iterator p = first;
-			this->min_ = *p;
-			this->max_ = *p;
+		++p;
 
-			++p;
-
-			while (p != last) {
-				for (size_t i = 0; i < Dimension; ++i) {
-					this->min_[i] = std::min(this->min_[i], (*p)[i]);
-					this->max_[i] = std::max(this->max_[i], (*p)[i]);
-				}
-				++p;
+		while (p != last) {
+			for (size_t i = 0; i < Dimension; ++i) {
+				this->min_[i] = std::min(this->min_[i], (*p)[i]);
+				this->max_[i] = std::max(this->max_[i], (*p)[i]);
 			}
+			++p;
 		}
 	}
 
@@ -76,11 +75,11 @@ public:
 	~aabb() {
 	}
 
-	const vector_type& min() const {
+	vector_type min() const {
 		return this->min_;
 	}
 
-	const vector_type& max() const {
+	vector_type max() const {
 		return this->max_;
 	}
 
@@ -132,25 +131,27 @@ private:
 	}
 };
 
-template<typename Vector>
-bool is_include(const aabb<Vector>& box, const Vector& v) {
+template<typename _T, std::size_t _Dimension>
+bool is_include(const aabb<_T, _Dimension>& box,
+		const vector<_T, _Dimension>& v) {
 	return false;
 }
 
-template<typename Vector>
-aabb<Vector> operator&(const aabb<Vector>& a, const aabb<Vector>& b);
+template<typename _T, std::size_t _Dimension>
+aabb<_T, _Dimension> operator&(const aabb<_T, _Dimension>& a,
+		const aabb<_T, _Dimension>& b);
 
-template<typename Vector>
-aabb<Vector> operator|(const aabb<Vector>& a, const aabb<Vector>& b);
+template<typename _T, std::size_t _Dimension>
+aabb<_T, _Dimension> operator|(const aabb<_T, _Dimension>& a,
+		const aabb<_T, _Dimension>& b);
 
 namespace inner {
 
-template<typename Vector>
-bool is_intersect_impl(const aabb<Vector>& a, const aabb<Vector>& b,
-		const typename vector_traits<Vector>::value_type& tolerance,
-		dimension_tag<GK::GK_2D>) {
-	const Vector u = a.min() - b.max();
-	const Vector v = b.min() - a.max();
+template<typename _T>
+bool is_intersect_impl(const aabb<_T, GK::GK_2D>& a,
+		const aabb<_T, GK::GK_2D>& b, const _T& tolerance) {
+	const vector<_T, GK::GK_2D> u = a.min() - b.max();
+	const vector<_T, GK::GK_2D> v = b.min() - a.max();
 
 	const bool ux_flag = u[GK::X] < tolerance;
 	const bool uy_flag = u[GK::Y] < tolerance;
@@ -161,12 +162,11 @@ bool is_intersect_impl(const aabb<Vector>& a, const aabb<Vector>& b,
 	return (ux_flag & uy_flag & vx_flag & vy_flag);
 }
 
-template<typename Vector>
-bool is_intersect_impl(const aabb<Vector>& a, const aabb<Vector>& b,
-		const typename vector_traits<Vector>::value_type& tolerance,
-		dimension_tag<GK::GK_3D>) {
-	const Vector u = a.min() - b.max();
-	const Vector v = b.min() - a.max();
+template<typename _T>
+bool is_intersect_impl(const aabb<_T, GK::GK_3D>& a,
+		const aabb<_T, GK::GK_3D>& b, const _T& tolerance) {
+	const vector<_T, GK::GK_3D> u = a.min() - b.max();
+	const vector<_T, GK::GK_3D> v = b.min() - a.max();
 
 	const bool ux_flag = u[GK::X] < tolerance;
 	const bool uy_flag = u[GK::Y] < tolerance;
@@ -181,65 +181,15 @@ bool is_intersect_impl(const aabb<Vector>& a, const aabb<Vector>& b,
 
 }  // namespace inner
 
-template<typename Vector, typename Tolerance>
-bool is_intersect(const aabb<Vector>& a, const aabb<Vector>& b,
-		const Tolerance& epsilon) {
-	return inner::is_intersect_impl(a, b, epsilon,
-			dimension_tag<vector_traits<Vector>::Dimension>());
+template<typename _T, std::size_t _Dimension>
+bool is_intersect(const aabb<_T, _Dimension>& a, const aabb<_T, _Dimension>& b,
+		const _T& epsilon) {
+	return inner::is_intersect_impl(a, b, epsilon);
 }
 
-template<typename Geometry>
-aabb<typename geometry_traits<Geometry>::vector_type> make_aabb(
-		const Geometry& x);
-
-template<typename Vector>
-aabb<Vector> make_boundary(const Vector& a, const Vector& b) {
-	return aabb<Vector>(a, b);
-}
-
+template<typename _T, std::size_t _Dimension, typename Geometry>
+aabb<_T, _Dimension> make_aabb(const Geometry& x);
 
 }  // namespace gk
-
-//template<GK_Dimension DimensionNumber>
-//bool is_crossover(const aabb<DimensionNumber>& a, const aabb<DimensionNumber>& b,
-//        const gktolerance& epsilon) {
-//    //	const gktolerance& epsilon = gkoption::Tolerance();
-//
-//    const gkvector<DimensionNumber> p = a.min() - b.max();
-//    const gkvector<DimensionNumber> q = b.min() - a.max();
-//
-//    const bool px_flag = p.x() < epsilon;
-//    const bool py_flag = p.y() < epsilon;
-//    const bool pz_flag = p.z() < epsilon;
-//
-//    const bool qx_flag = q.x() < epsilon;
-//    const bool qy_flag = q.y() < epsilon;
-//    const bool qz_flag = q.z() < epsilon;
-//
-//    return (px_flag & py_flag & pz_flag & qx_flag & qy_flag & qz_flag);
-//}
-
-//template<GK_Dimension D>
-//bool is_crossover(const aabb<D>& a, const aabb<D>& b) {
-//    return is_crossover(a, b, gkoption::Tolerance());
-//}
-
-//bool is_crossover(const aabb<GK_2D>& a, const aabb<GK_2D>& b);
-//bool is_crossover(const aabb<GK_3D>& a, const aabb<GK_3D>& b);
-//
-//bool is_inclusion(const aabb<GK_2D>& aabb, const gkvector<GK_2D>& v);
-//bool is_inclusion(const aabb<GK_3D>& aabb, const gkvector<GK_3D>& v);
-
-///**
-// * @brief Constant AABB objects.
-// */
-//template<GK_Dimension D>
-//class const_gkaabb {
-//public:
-//	static const aabb<D>& Invalid() {
-//		static const aabb<D> x;
-//		return x;
-//	}
-//};
 
 #endif /* GKAABB_H_ */

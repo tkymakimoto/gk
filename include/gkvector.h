@@ -16,7 +16,6 @@
 
 #include "gkdef.h"
 #include "gkfunctional.h"
-//#include "gkgeometry.h"
 #include "gkquaternion.h"
 
 #include <numeric>

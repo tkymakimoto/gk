@@ -19,7 +19,7 @@
 #include <stdint.h>
 #include <limits>
 
-#include "config/gkconfig.h"
+#include "gkconfig.h"
 
 typedef bool gkselection;
 
@@ -141,12 +141,16 @@ struct GK {
 
 	static const bool InfiniteLength = false;
 	static const bool FiniteLength = true;
+
+	template<typename _T>
+	static _T epsilon() {
+		return std::numeric_limits<_T>::epsilon();
+	}
 };
 
 template<std::size_t _Dimension1, std::size_t _Dimension2>
 struct check_same_dimension {
 	typedef void value_type;
-	const value_type Dimension;
 };
 
 template<std::size_t _Dimension>
