@@ -34,7 +34,8 @@ public:
 	/**
 	 * @brief Default constructor.
 	 */
-	aabb() {
+	aabb() :
+			min_(), max_() {
 	}
 
 	/**
@@ -133,7 +134,7 @@ private:
 
 template<typename _T, std::size_t _Dimension>
 bool is_include(const aabb<_T, _Dimension>& box,
-		const vector<_T, _Dimension>& v) {
+		const vector<_T, _Dimension>& v, const _T& epsilon) {
 	return false;
 }
 
