@@ -183,13 +183,22 @@ bool is_intersect_impl(const aabb<_T, GK::GK_3D>& a,
 }  // namespace inner
 
 template<typename _T, std::size_t _Dimension>
-bool is_intersect(const aabb<_T, _Dimension>& a, const aabb<_T, _Dimension>& b,
-		const _T& epsilon) {
+bool test_intersect(const aabb<_T, _Dimension>& a,
+		const aabb<_T, _Dimension>& b, const _T& epsilon) {
 	return inner::is_intersect_impl(a, b, epsilon);
 }
 
-template<typename _T, std::size_t _Dimension, typename Geometry>
-aabb<_T, _Dimension> make_aabb(const Geometry& x);
+/**
+ *
+ * @param x
+ * @return
+ */
+template<typename _T, std::size_t _Dimension, typename _Category>
+aabb<_T, _Dimension> make_aabb(const geometry<_Category, _T, _Dimension>& x);
+
+template<typename _T, std::size_t _Dimension, typename _Category>
+bool test_intersection(const aabb<_T, _Dimension>& box,
+		const geometry<_Category, _T, _Dimension>& geometry);
 
 }  // namespace gk
 

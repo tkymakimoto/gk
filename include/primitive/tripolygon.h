@@ -41,7 +41,6 @@ class tripolygon: geometry<surface_tag, _T, _Dimension, void> {
 public:
 	tripolygon() :
 			vertices_() {
-
 	}
 
 	tripolygon(const tripolygon& other) :
